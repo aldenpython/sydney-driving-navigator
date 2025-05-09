@@ -1,16 +1,24 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Menu } from 'lucide-react';
 import { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 
 const NavBar = () => {
   const isMobile = useIsMobile();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { isLoggedIn, logout } = useAuth();
+  const navigate = useNavigate();
   
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
   };
 
   return (
@@ -33,9 +41,18 @@ const NavBar = () => {
               <Link to="/lessons" className="text-foreground hover:text-primary px-3 py-2 text-sm font-medium">
                 Book Lessons
               </Link>
-              <Link to="/register" className="text-foreground hover:text-primary px-3 py-2 text-sm font-medium">
-                Login/Register
-              </Link>
+              {isLoggedIn ? (
+                <button 
+                  onClick={handleLogout}
+                  className="text-foreground hover:text-primary px-3 py-2 text-sm font-medium"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link to="/register" className="text-foreground hover:text-primary px-3 py-2 text-sm font-medium">
+                  Login/Register
+                </Link>
+              )}
               <Link to="/contact" className="text-foreground hover:text-primary px-3 py-2 text-sm font-medium">
                 Contact
               </Link>
@@ -70,13 +87,25 @@ const NavBar = () => {
             >
               Book Lessons
             </Link>
-            <Link 
-              to="/register" 
-              className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
-              onClick={() => setMenuOpen(false)}
-            >
-              Login/Register
-            </Link>
+            {isLoggedIn ? (
+              <button 
+                onClick={() => {
+                  handleLogout();
+                  setMenuOpen(false);
+                }}
+                className="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link 
+                to="/register" 
+                className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
+                onClick={() => setMenuOpen(false)}
+              >
+                Login/Register
+              </Link>
+            )}
             <Link 
               to="/contact" 
               className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
