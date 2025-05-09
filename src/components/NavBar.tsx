@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -5,10 +6,12 @@ import { Menu } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
+import LogoutConfirmDialog from './LogoutConfirmDialog';
 
 const NavBar = () => {
   const isMobile = useIsMobile();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
   
@@ -16,7 +19,14 @@ const NavBar = () => {
     setMenuOpen(!menuOpen);
   };
 
-  const handleLogout = async () => {
+  const handleLogoutClick = () => {
+    setShowLogoutDialog(true);
+    if (isMobile) {
+      setMenuOpen(false);
+    }
+  };
+  
+  const handleLogoutConfirm = async () => {
     try {
       await logout();
       // Navigation happens after successful logout
@@ -50,7 +60,7 @@ const NavBar = () => {
               </Link>
               {isLoggedIn ? (
                 <button 
-                  onClick={handleLogout}
+                  onClick={handleLogoutClick}
                   className="text-foreground hover:text-primary px-3 py-2 text-sm font-medium"
                 >
                   Logout
@@ -96,14 +106,7 @@ const NavBar = () => {
             </Link>
             {isLoggedIn ? (
               <button 
-                onClick={async () => {
-                  try {
-                    await handleLogout();
-                    setMenuOpen(false);
-                  } catch (error) {
-                    // Error handling is already in handleLogout
-                  }
-                }}
+                onClick={handleLogoutClick}
                 className="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
               >
                 Logout
@@ -127,6 +130,13 @@ const NavBar = () => {
           </div>
         )}
       </div>
+
+      {/* Logout confirmation dialog */}
+      <LogoutConfirmDialog 
+        isOpen={showLogoutDialog} 
+        onOpenChange={setShowLogoutDialog}
+        onConfirm={handleLogoutConfirm}
+      />
     </header>
   );
 };
