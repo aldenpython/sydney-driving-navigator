@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Menu } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { toast } from 'sonner';
 
 const NavBar = () => {
   const isMobile = useIsMobile();
@@ -16,9 +16,16 @@ const NavBar = () => {
     setMenuOpen(!menuOpen);
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      // Navigation happens after successful logout
+      navigate('/');
+    } catch (error) {
+      // Error is already handled in the auth context, but we can add additional handling here if needed
+      console.error("Error in navbar during logout:", error);
+      // No need to show another toast as it's already shown in the context
+    }
   };
 
   return (
@@ -89,9 +96,13 @@ const NavBar = () => {
             </Link>
             {isLoggedIn ? (
               <button 
-                onClick={() => {
-                  handleLogout();
-                  setMenuOpen(false);
+                onClick={async () => {
+                  try {
+                    await handleLogout();
+                    setMenuOpen(false);
+                  } catch (error) {
+                    // Error handling is already in handleLogout
+                  }
                 }}
                 className="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
               >
