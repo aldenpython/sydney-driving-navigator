@@ -171,7 +171,7 @@ const Register = () => {
                           <Input type="date" {...field} />
                         </FormControl>
                         <FormDescription>
-                          You must be at least 18 years old
+                          <span className="text-red-600 font-bold">You must be at least 18 years old</span>
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -217,7 +217,7 @@ const Register = () => {
                           <Input type="password" {...field} />
                         </FormControl>
                         <FormDescription>
-                          Minimum 8 characters
+                          <span className="text-red-600 font-bold">Minimum 8 characters</span>
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -280,6 +280,9 @@ const Register = () => {
                         <FormControl>
                           <Input placeholder="1234 5678 9012 3456" {...field} />
                         </FormControl>
+                        <FormDescription>
+                          <span className="text-red-600 font-bold">Card number must be 16-19 digits</span>
+                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -295,6 +298,9 @@ const Register = () => {
                           <FormControl>
                             <Input placeholder="MM/YY" {...field} />
                           </FormControl>
+                          <FormDescription>
+                            <span className="text-red-600 font-bold">Format: MM/YY</span>
+                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -309,6 +315,9 @@ const Register = () => {
                           <FormControl>
                             <Input placeholder="123" {...field} />
                           </FormControl>
+                          <FormDescription>
+                            <span className="text-red-600 font-bold">3 digits only</span>
+                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
