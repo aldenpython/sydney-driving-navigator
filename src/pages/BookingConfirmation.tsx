@@ -3,7 +3,7 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
-import { Calendar, MapPin, Clock, Mail, User, Car } from 'lucide-react';
+import { Calendar, MapPin, Clock, Mail, User, Car, Tag } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 const BookingConfirmation = () => {
@@ -86,6 +86,19 @@ const BookingConfirmation = () => {
                       <p className="text-muted-foreground">{bookingData.vehicleType}</p>
                     </div>
                   </div>
+                  
+                  {bookingData.quantity > 1 && (
+                    <div className="flex items-start">
+                      <Tag className="h-5 w-5 text-muted-foreground mr-3 mt-0.5" />
+                      <div>
+                        <p className="font-medium">Number of Lessons</p>
+                        <p className="text-muted-foreground">{bookingData.quantity}</p>
+                        {bookingData.discountApplied && (
+                          <p className="text-sm text-green-600">20% discount applied</p>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               
@@ -101,12 +114,50 @@ const BookingConfirmation = () => {
                 </div>
               </div>
               
+              {bookingData.addOns && bookingData.addOns.length > 0 && (
+                <div className="border-b pb-4">
+                  <h2 className="text-lg font-semibold mb-4 text-primary">Add-on Services</h2>
+                  
+                  <div className="space-y-2">
+                    {bookingData.addOns.map((addon: any, index: number) => (
+                      <div key={index} className="flex justify-between items-center">
+                        <span>{addon.name}</span>
+                        <span className="font-medium">${addon.price}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
               <div>
                 <h2 className="text-lg font-semibold mb-4 text-primary">Payment</h2>
                 
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Lesson Fee</span>
-                  <span className="text-lg font-semibold">{bookingData.price}</span>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span>Base Price</span>
+                    <span>{bookingData.originalPrice || bookingData.price}</span>
+                  </div>
+                  
+                  {bookingData.quantity > 1 && (
+                    <div className="flex justify-between items-center">
+                      <span>Quantity</span>
+                      <span>x{bookingData.quantity}</span>
+                    </div>
+                  )}
+                  
+                  {bookingData.discountApplied && (
+                    <div className="flex justify-between items-center text-green-600">
+                      <span>Discount</span>
+                      <span>20% off</span>
+                    </div>
+                  )}
+                  
+                  <div className="border-t pt-2 mt-2">
+                    <div className="flex justify-between items-center font-bold text-lg">
+                      <span>Total</span>
+                      <span>{bookingData.totalPrice || bookingData.price}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
               

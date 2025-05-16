@@ -94,12 +94,12 @@ const Lessons = () => {
     if (bookedLesson) {
       // Show toast notification
       toast({
-        title: "Booking in progress",
-        description: "Redirecting to confirmation page...",
+        title: "Lesson selected",
+        description: "Proceed to checkout to complete your booking",
       });
       
-      // Navigate to the booking confirmation page with the lesson data
-      navigate('/booking-confirmation', { 
+      // Navigate to the checkout page with the lesson data
+      navigate('/checkout', { 
         state: { bookingData: bookedLesson } 
       });
     }
