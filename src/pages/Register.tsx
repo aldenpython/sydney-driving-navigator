@@ -34,6 +34,7 @@ const registerSchema = z.object({
   }, { message: "You must be at least 18 years old" }),
   email: z.string().email({ message: "Please enter a valid email address" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters" }),
+  confirmPassword: z.string(),
   securityQuestion: z.string().min(1, { message: "Security question is required" }),
   securityAnswer: z.string().min(1, { message: "Security answer is required" }),
   cardNumber: z.string()
@@ -49,6 +50,9 @@ const registerSchema = z.object({
     message: "You must consent to the $50 joining fee payment",
   }),
   marketingOptIn: z.boolean().optional(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
@@ -66,6 +70,7 @@ const Register = () => {
       dateOfBirth: "",
       email: "",
       password: "",
+      confirmPassword: "",
       securityQuestion: "",
       securityAnswer: "",
       cardNumber: "",
@@ -99,7 +104,7 @@ const Register = () => {
       login();
       toast({
         title: "Registration Successful",
-        description: "Welcome to Sydney Driving School! Your $50 joining fee has been processed.",
+        description: "Welcome to HKAA Driving School! Your $50 joining fee has been processed.",
       });
     }, 1500);
   };
@@ -112,8 +117,14 @@ const Register = () => {
     
     toast({
       title: "Login Successful",
-      description: "Welcome back to Sydney Driving School!",
+      description: "Welcome back to HKAA Driving School!",
     });
+  };
+
+  // Helper function to check if a field has errors and has been touched
+  const showError = (fieldName: keyof RegisterFormData) => {
+    const field = form.getFieldState(fieldName);
+    return field.isTouched && field.error;
   };
   
   if (isLoggedIn) {
@@ -170,9 +181,11 @@ const Register = () => {
                         <FormControl>
                           <Input type="date" {...field} />
                         </FormControl>
-                        <FormDescription>
-                          <span className="text-red-600 font-bold">You must be at least 18 years old</span>
-                        </FormDescription>
+                        {showError("dateOfBirth") && (
+                          <FormDescription>
+                            <span className="text-red-600 font-bold">You must be at least 18 years old</span>
+                          </FormDescription>
+                        )}
                         <FormMessage />
                       </FormItem>
                     )}
@@ -216,9 +229,30 @@ const Register = () => {
                         <FormControl>
                           <Input type="password" {...field} />
                         </FormControl>
-                        <FormDescription>
-                          <span className="text-red-600 font-bold">Minimum 8 characters</span>
-                        </FormDescription>
+                        {showError("password") && (
+                          <FormDescription>
+                            <span className="text-red-600 font-bold">Minimum 8 characters</span>
+                          </FormDescription>
+                        )}
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          <div className="flex items-center gap-2">
+                            <Lock className="h-4 w-4" />
+                            Confirm Password
+                          </div>
+                        </FormLabel>
+                        <FormControl>
+                          <Input type="password" {...field} />
+                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -280,9 +314,11 @@ const Register = () => {
                         <FormControl>
                           <Input placeholder="1234 5678 9012 3456" {...field} />
                         </FormControl>
-                        <FormDescription>
-                          <span className="text-red-600 font-bold">Card number must be 16-19 digits</span>
-                        </FormDescription>
+                        {showError("cardNumber") && (
+                          <FormDescription>
+                            <span className="text-red-600 font-bold">Card number must be 16-19 digits</span>
+                          </FormDescription>
+                        )}
                         <FormMessage />
                       </FormItem>
                     )}
@@ -298,9 +334,11 @@ const Register = () => {
                           <FormControl>
                             <Input placeholder="MM/YY" {...field} />
                           </FormControl>
-                          <FormDescription>
-                            <span className="text-red-600 font-bold">Format: MM/YY</span>
-                          </FormDescription>
+                          {showError("cardExpiry") && (
+                            <FormDescription>
+                              <span className="text-red-600 font-bold">Format: MM/YY</span>
+                            </FormDescription>
+                          )}
                           <FormMessage />
                         </FormItem>
                       )}
@@ -315,9 +353,11 @@ const Register = () => {
                           <FormControl>
                             <Input placeholder="123" {...field} />
                           </FormControl>
-                          <FormDescription>
-                            <span className="text-red-600 font-bold">3 digits only</span>
-                          </FormDescription>
+                          {showError("cardCvv") && (
+                            <FormDescription>
+                              <span className="text-red-600 font-bold">3 digits only</span>
+                            </FormDescription>
+                          )}
                           <FormMessage />
                         </FormItem>
                       )}
@@ -337,7 +377,7 @@ const Register = () => {
                         </FormControl>
                         <div className="space-y-1 leading-none">
                           <FormLabel>
-                            I authorize Sydney Driving School to charge the $50 joining fee to my card
+                            I authorize HKAA Driving School to charge the $50 joining fee to my card
                           </FormLabel>
                           <FormMessage />
                         </div>

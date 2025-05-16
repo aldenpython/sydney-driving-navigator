@@ -12,11 +12,11 @@ const Footer = () => {
           <div className="mb-6 md:mb-0">
             <Link to="/" className="flex items-center">
               <span className="self-center text-xl font-semibold whitespace-nowrap text-primary">
-                Sydney Driving School
+                HKAA Driving School
               </span>
             </Link>
             <p className="mt-2 text-sm text-muted-foreground">
-              Professional driving instruction in Sydney
+              Professional driving instruction in Hong Kong
             </p>
           </div>
           
@@ -58,10 +58,10 @@ const Footer = () => {
                   <p>123 Drive Street</p>
                 </li>
                 <li className="mb-2">
-                  <p>Sydney, NSW 2000</p>
+                  <p>Hong Kong</p>
                 </li>
                 <li className="mb-2">
-                  <p>info@sydneydrivingschool.com</p>
+                  <p>info@hkaadrivingschool.com</p>
                 </li>
               </ul>
             </div>
@@ -72,7 +72,7 @@ const Footer = () => {
         
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-muted-foreground">
-            © {currentYear} Sydney Driving School. All Rights Reserved.
+            © {currentYear} HKAA Driving School. All Rights Reserved.
           </span>
           <div className="flex mt-4 space-x-6 sm:mt-0">
             <Link to="#" className="text-muted-foreground hover:text-primary">
