@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import Lessons from "./pages/Lessons";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import BookingConfirmation from "./pages/BookingConfirmation";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -29,6 +30,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Lessons />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/booking-confirmation" 
+              element={
+                <ProtectedRoute>
+                  <BookingConfirmation />
                 </ProtectedRoute>
               } 
             />

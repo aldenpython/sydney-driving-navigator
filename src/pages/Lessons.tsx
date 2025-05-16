@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import { useToast } from "@/components/ui/use-toast";
@@ -65,6 +66,7 @@ const lessonData = [
 
 const Lessons = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
   const [vehicleType, setVehicleType] = useState("");
@@ -86,10 +88,21 @@ const Lessons = () => {
   };
   
   const handleBooking = (lessonId: number) => {
-    toast({
-      title: "Lesson Booked Successfully",
-      description: "Your driving lesson has been booked. Check your email for confirmation.",
-    });
+    // Find the booked lesson from the filteredLessons array
+    const bookedLesson = filteredLessons.find(lesson => lesson.id === lessonId);
+    
+    if (bookedLesson) {
+      // Show toast notification
+      toast({
+        title: "Booking in progress",
+        description: "Redirecting to confirmation page...",
+      });
+      
+      // Navigate to the booking confirmation page with the lesson data
+      navigate('/booking-confirmation', { 
+        state: { bookingData: bookedLesson } 
+      });
+    }
   };
   
   return (
