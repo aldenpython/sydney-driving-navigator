@@ -45,7 +45,7 @@ const NavBar = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
-              <span className="text-xl font-bold text-primary">Sydney Driving School</span>
+              <span className="text-xl font-bold text-primary">HKAA Driving School</span>
             </Link>
           </div>
           
