@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -16,7 +15,7 @@ const Footer = () => {
               </span>
             </Link>
             <p className="mt-2 text-sm text-muted-foreground">
-              Professional driving instruction in Hong Kong
+              Professional driving instruction in Sydney
             </p>
           </div>
           
@@ -58,7 +57,7 @@ const Footer = () => {
                   <p>123 Drive Street</p>
                 </li>
                 <li className="mb-2">
-                  <p>Hong Kong</p>
+                  <p>Sydney</p>
                 </li>
                 <li className="mb-2">
                   <p>info@hkaadrivingschool.com</p>
